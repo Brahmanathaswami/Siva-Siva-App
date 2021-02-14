@@ -173,7 +173,7 @@ on mouseup
          
          if tPlayPause is "pause" then
             if not isMobile() then
-                  put  the currentTime of player "audioPlayer" into sTimeStamp
+               put  the currentTime of player "audioPlayer" into sTimeStamp
             else
                put mobileControlGet ( "audioPlayer", "currentTime" ) into sTimeStamp
             end if
@@ -185,6 +185,14 @@ on mouseup
             playPausedAudio sTimeStamp
          end if
          
+         break
+         
+      case "SeekForward"
+         audioSeekForward
+         break
+         
+      case "SeekBack"
+         audioSeekBack
          break
          
       case "DownloadSelection"  
