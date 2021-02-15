@@ -780,29 +780,29 @@ command audioIsRunning
   
 end audioIsRunning
 
-command togglePause pVisible, pState
-   # this in lieu of, or additional to a controller
-   # generic for any context we have a pause and play scenario
-   # hide the grp, or toggle it
-   # take two boolean params: 
-   #    1) true to hide the group the group
-   #    2) true to show that pause icon:  II which means audio is on and playing
-   #         false: shows that the triangle button, saying that the audio is pause
-   #                  and that you can click to resume
-   ntInfo "about to hide/show pause-play"
-   -- if not isMobile() then 
-      if exists (group "pause-play") then
-         set the vis grp "pause-play" to pVisible
-         
-         set the vis of widget "pauseAudio" to pState
-         # which means player is playing, giving user the  option to pause
-         
-         set the vis of widget "playAudio" to not pState
-         # which means player is pause, giving user the re-start playback
-         
-      end if
- -- end if
-end togglePause
+--command togglePause pVisible, pState
+--   # this in lieu of, or additional to a controller
+--   # generic for any context we have a pause and play scenario
+--   # hide the grp, or toggle it
+--   # take two boolean params: 
+--   #    1) true to hide the group the group
+--   #    2) true to show that pause icon:  II which means audio is on and playing
+--   #         false: shows that the triangle button, saying that the audio is pause
+--   #                  and that you can click to resume
+--   ntInfo "about to hide/show pause-play"
+--   -- if not isMobile() then 
+--      if exists (group "pause-play") then
+--         set the vis grp "pause-play" to pVisible
+
+--         set the vis of widget "pauseAudio" to pState
+--         # which means player is playing, giving user the  option to pause
+
+--         set the vis of widget "playAudio" to not pState
+--         # which means player is pause, giving user the re-start playback
+
+--      end if
+-- -- end if
+--end togglePause
 
 
 function runningAudioIndicatorVis visBool

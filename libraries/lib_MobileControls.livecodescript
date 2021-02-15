@@ -50,8 +50,8 @@ local sPlayerId, sPlayerRect,sDuration
 -- BR 2020-03-06 -deprecating the mobilebusy because user has no control
 
 local sPlaying
-
-
+local sCurrentTime, tHoursMinutes, sTimeStamp, tDuration,  tWidth,
+local sSeek
 
 command createMobileAudioPlayer pURL, pPlayerName, pAudioRect
    log "createMobilePlayer"
@@ -183,14 +183,19 @@ end setMobileAudioPlayer
 on audioSeekForward
    // cause play to pause
    
-   if isMobile() then
-      setMobileAudioPlayer "audioPlayer", "pause"
-   else
-      set the paused of  player "audioPlayer" of stack "listen" to "true"
-   end if
-   put false into sPlaying
+   --   if isMobile() then
+   --      setMobileAudioPlayer "audioPlayer", "pause"
+   --   else
+   --      set the paused of  player "audioPlayer" of stack "listen" to "true"
+   --   end if
+   
+   put true into sPlaying
+   set the iconPresetName of widget "PlayPause" of stack "listen" to "play"
    
    // auto timer he  allows the  user to forward 
+   
+   put true into sSeek
+   updateTimer 
    
    // then allow play
    
@@ -204,15 +209,17 @@ on audioSeekBack
    // then allow play
 end audioSeekBack
 
-
-
-######### Mobile Utilities ############
-# we shall call of these handlers as we click on mouseup
-# 
-
-local tCurrentTime, tHoursMinutes, sTimeStamp, tDuration,  tWidth,
-
 command updateTimer
+   
+   --   if sSeek is true then
+   --      put (sCurrentTime + 10000) into sCurrentTime
+   --   end if
+   --   if sSeek is false then
+   --      put (sCurrentTime - 10000) into sCurrentTime
+   --   end if
+   --   if sSeek is empty then
+   --      put sCurrentTime = sCurrentTime
+   --   end if
    
    // Update the time indicator
    if sPlaying is true then
@@ -222,26 +229,30 @@ command updateTimer
       end if
       
       lock screen
+      
+      
       if isMobile() then
-         put mobileControlGet("audioPlayer","currentTime") into tCurrentTime
+         put mobileControlGet("audioPlayer","currentTime") into sCurrentTime
          put mobileControlGet("audioPlayer","playableDuration") into tDuration
       else
-         put the currentTime of player "audioPlayer" of stack "listen" into tCurrentTime
+         put the currentTime of player "audioPlayer" of stack "listen" into sCurrentTime
          put the duration of player "audioPlayer" of stack "listen" into tDuration
       end if
       
-      if tCurrentTime > 0 and tDuration > 0 then
+      
+      if sCurrentTime > 0 and tDuration > 0 then
          
          // Update the time indicator
-         put round((tCurrentTime/tDuration) * 350) into tWidth
+         put round((sCurrentTime/tDuration) * 350) into tWidth
          
-         put tCurrentTime into sTimeStamp
+        
+         put getCurrentTime() into sCurrentTime
          
          // Update time fields
-         put convertTime(tCurrentTime) into tHoursMinutes
+         put convertTime(sCurrentTime) into tHoursMinutes
          put convertTime(tDuration) into tDuration
          
-         put getCurrentTime() into tHoursMinutes
+         put getHoursMinsTime() into tHoursMinutes
          
          put tHoursMinutes into fld "currentTime" of stack "listen"
          put tDuration into fld "endTime" of stack "listen"
@@ -253,12 +264,6 @@ command updateTimer
          set the left of graphic "durationMarker" of stack "listen" to (the right of graphic "durationProgress" of stack "listen"  - 7)
          set the left of graphic "durationProgress" of stack "listen" to the left of graphic "durationBG" of stack "listen"
          
-         // redundeck 
-         --         put true into sPlaying
-         --         // Reset duration marker
-         --         set the width of graphic "durationProgress" to 1
-         --         set the left of graphic "durationProgress" to 25
-         --         set the left of graphic "durationMarker" to (the right of graphic "durationProgress" - 7)
       end if
       
       unlock screen
@@ -267,12 +272,12 @@ command updateTimer
 end updateTimer  
 
 function getCurrentTime 
-   return tHoursMinutes
+   return sCurrentTime
 end getCurrentTime
 
-function getTimestamp
-   return sTimestamp
-end getTimestamp
+function getHoursMinsTime
+   return tHoursMinutes
+end getHoursMinsTime
 
 local tMilliseconds, tHours, tMinutes, tSeconds
 

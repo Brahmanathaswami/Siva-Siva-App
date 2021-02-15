@@ -209,9 +209,7 @@ on mouseup
          break
    end switch
    
-   
 end mouseup
-
 
 command switchAudioUi sAudioUI
    local pUI

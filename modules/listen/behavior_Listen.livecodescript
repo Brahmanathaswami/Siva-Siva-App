@@ -1053,15 +1053,14 @@ command addJournalEntry -- save a bookmark to database
    
    put getJournalData() into pDataA   
    
-   put getCurrentTime() into tHoursMinutes
-   put tHoursMinutes into pDataA["currentTime"]
+   put getCurrentTime() into sTimeStamp
+   put getHoursMinsTime() into tHoursMinutes
+   put sTimeStamp into pDataA["timeStamp"]
+   put tHoursMinutes into pDataA["hoursMinutes"]
    
-   --   put getTimestamp() into tCurrentTime
-   --   put tCurrentTime  into pDataA["timeStamp"]
-   put getCurrentTime() into pDataA["timeStamp"]
    
    put pDataA["title"] into tTitle
-   put ", " & pDataA["currentTime"] after tTitle
+   put ", " & pDataA["hoursMinutes"] after tTitle
    
    Journal_RecordEntry "listen",tTitle,pDataA 
    
