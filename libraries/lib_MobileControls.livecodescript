@@ -51,7 +51,7 @@ local sPlayerId, sPlayerRect,sDuration
 
 local sPlaying
 local sCurrentTime, tHoursMinutes, sTimeStamp, tDuration,  tWidth,
-local sSeek
+local pDataA
 
 command createMobileAudioPlayer pURL, pPlayerName, pAudioRect
    log "createMobilePlayer"
@@ -180,46 +180,40 @@ command setMobileAudioPlayer pPlayerName, pState, pTimeStamp
    
 end setMobileAudioPlayer
 
-on audioSeekForward
-   // cause play to pause
-   
-   --   if isMobile() then
-   --      setMobileAudioPlayer "audioPlayer", "pause"
-   --   else
-   --      set the paused of  player "audioPlayer" of stack "listen" to "true"
-   --   end if
-   
-   put true into sPlaying
-   set the iconPresetName of widget "PlayPause" of stack "listen" to "play"
-   
-   // auto timer he  allows the  user to forward 
-   
-   put true into sSeek
-   updateTimer 
-   
-   // then allow play
-   
-end audioSeekForward
+--on audioSeekForward
+--   // cause play to pause
 
-on audioSeekBack
-   // cause play to pause
-   
-   // auto timer he  allows the  user to back
-   
-   // then allow play
-end audioSeekBack
+--   --   if isMobile() then
+--   --      setMobileAudioPlayer "audioPlayer", "pause"
+--   --   else
+--   --      set the paused of  player "audioPlayer" of stack "listen" to "true"
+--   --   end if
+
+--   put true into sPlaying
+--   set the iconPresetName of widget "PlayPause" of stack "listen" to "play"
+
+--   // auto timer he  allows the  user to forward 
+
+--   put true into sSeek
+--   updateTimer 
+
+--   // then allow play
+
+--end audioSeekForward
+
+--on audioSeekBack
+--   // cause play to pause
+
+--   // auto timer he  allows the  user to back
+
+--   // then allow play
+--end audioSeekBack
+
+Local fastforward
 
 command updateTimer
+   -- put fastForward() into pDataA
    
-   --   if sSeek is true then
-   --      put (sCurrentTime + 10000) into sCurrentTime
-   --   end if
-   --   if sSeek is false then
-   --      put (sCurrentTime - 10000) into sCurrentTime
-   --   end if
-   --   if sSeek is empty then
-   --      put sCurrentTime = sCurrentTime
-   --   end if
    
    // Update the time indicator
    if sPlaying is true then
@@ -245,7 +239,7 @@ command updateTimer
          // Update the time indicator
          put round((sCurrentTime/tDuration) * 350) into tWidth
          
-        
+         
          put getCurrentTime() into sCurrentTime
          
          // Update time fields
@@ -267,6 +261,7 @@ command updateTimer
       end if
       
       unlock screen
+      
       send "updateTimer" to me in 20 milliseconds
    end if
 end updateTimer  
@@ -278,6 +273,8 @@ end getCurrentTime
 function getHoursMinsTime
    return tHoursMinutes
 end getHoursMinsTime
+
+
 
 local tMilliseconds, tHours, tMinutes, tSeconds
 
@@ -402,4 +399,11 @@ end setZeroDurationProgress
 --end playPausedAudio
 
 
+on mouseStillDown pButtonNumber
+   
+end mouseStillDown
 
+
+on errorDialog pExecutionError, pParseError
+   
+end errorDialog

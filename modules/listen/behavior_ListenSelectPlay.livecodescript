@@ -245,24 +245,26 @@ command switchAudioUi sAudioUI
    end switch
 end switchAudioUi
 
-command playSingle pDataA
-   local tSearchA,x,tItem_id
-   local tURL,tSelectedItemA
-   
-   put empty into tSelectedItemA
-   
-   put pDataA["url"] into tURL
-   put pDataA["item_id"] into tItem_id
-   
-   unlock screen
-   
-   startPlayer tURL,pDataA["title"]
-   showBusyIndicator false
-   if  "audio/book" is not in tURL then # no display details
-      select_ShowDetails "downloaded"
-   end if 
-   
-end playSingle
+--command playSingle pDataA
+--   local tSearchA,x,tItem_id
+--   local tURL,tSelectedItemA
+--   local sCurrentTime
+
+--   put empty into tSelectedItemA
+
+--   put pDataA["url"] into tURL
+--   put pDataA["item_id"] into tItem_id
+
+--   unlock screen
+
+--   startPlayer tURL,pDataA["title"]
+--   put pDataA["timeStamp"]  into sCurrentTime
+--   showBusyIndicator false
+--   if  "audio/book" is not in tURL then # no display details
+--      select_ShowDetails "downloaded"
+--   end if 
+
+--end playSingle
 
 command share_Items 
    local tURL,  sShareItemsA

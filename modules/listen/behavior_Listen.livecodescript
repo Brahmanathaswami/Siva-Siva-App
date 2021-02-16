@@ -29,7 +29,7 @@ local sCurrentPlayListA,sTargetPlayList,sListType,sPlaylistQueryA,sShareURL,sOnL
 local sNowPlayingTitle, sNowPlayingArtist,sNowPlayingDetails,sStartTimer,sEndTimer
 local sCached, sBrowseHeader, sTimeStamp, sRemoteURL
 local sSelectionsA,sLastTarget,sSelectNum, pDataA
-
+local sFastforward
 
 on preOpenStack
    if isMobile() then    
@@ -1074,17 +1074,52 @@ on journalResume  pDataA, pEntryA
    
    
    put pDataA["card"] into tCard
-  
+   
    go to card tCard
    
    if tCard= "listen-file"  then
       # using has want to listen you one unique audio file
       # we have set to the card up....  in the the future
       # we can integrate is this listen behavior .
-      dispatch "playSingle" to card "listen-file" with pDataA
+      
+    playSingle pDataA
+      
    end if
-  
+   
 end journalResume
+
+local sCurrentTime
+command playSingle pDataA
+   local tSearchA,x,tItem_id
+   local tURL,tSelectedItemA
+
+   
+   put empty into tSelectedItemA
+   
+   put pDataA["url"] into tURL
+   put pDataA["item_id"] into tItem_id
+   
+   unlock screen
+   
+   startPlayer tURL,pDataA["title"]
+   put pDataA["timeStamp"]  into sCurrentTime
+   showBusyIndicator false
+   if  "audio/book" is not in tURL then # no display details
+      select_ShowDetails "downloaded"
+   end if 
+   
+end playSingle
+
+function fastForward
+   put pDataA["timeStamp"]  into sCurrentTime
+   return pDataA
+end fastForward
+   
+   function fastForward
+   put pDataA["timeStamp"]  into sCurrentTime
+   return sCurrentTime
+end fastForward
+
 
 
 ------------- 
@@ -1169,7 +1204,7 @@ command startPlayer  pURL,pTitle,sCardName,sSelectNum
    end if
    
    put  pTitle into fld "currentTitleLabel"
-   send "updateTimer sPlaying" -- in 100 milliseconds
+   send "updateTimer" -- in 100 milliseconds
    set the iconPresetName of widget "PlayPause" to "pause"
  
 end startPlayer
