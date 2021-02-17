@@ -31,7 +31,7 @@ local sCached, sBrowseHeader, sTimeStamp, sRemoteURL
 local sSelectionsA,sLastTarget,sSelectNum, pDataA
 local sFastforward
 
-on preOpenStack
+.
    if isMobile() then    
       mobileSetAllowedOrientations "portrait,portrait upside down"
       set the fullscreenmode of this stack to empty
@@ -1088,21 +1088,22 @@ on journalResume  pDataA, pEntryA
    
 end journalResume
 
-local sCurrentTime
+
 command playSingle pDataA
    local tSearchA,x,tItem_id
    local tURL,tSelectedItemA
-
+   
    
    put empty into tSelectedItemA
    
    put pDataA["url"] into tURL
    put pDataA["item_id"] into tItem_id
+   put pDataA["timeStamp"]  into sTimeStamp
    
    unlock screen
    
    startPlayer tURL,pDataA["title"]
-   put pDataA["timeStamp"]  into sCurrentTime
+   
    showBusyIndicator false
    if  "audio/book" is not in tURL then # no display details
       select_ShowDetails "downloaded"
@@ -1110,19 +1111,7 @@ command playSingle pDataA
    
 end playSingle
 
-function fastForward
-   put pDataA["timeStamp"]  into sCurrentTime
-   return pDataA
-end fastForward
-   
-   function fastForward
-   put pDataA["timeStamp"]  into sCurrentTime
-   return sCurrentTime
-end fastForward
-
-
-
-------------- 
+ 
 on __ListenUtilities
 end __ListenUtilities
 
@@ -1190,23 +1179,25 @@ command startPlayer  pURL,pTitle,sCardName,sSelectNum
    # 2019-10-23 BR we are not showing controller  because of iOS 13.0.3
    # instead we are using the icons of grp "pause-pay"
    
+   if sTimeStamp is empty then
+      put 0 into sTimeStamp
+   end if
+   --
    if not isMobile() then
-      if sTimeStamp is empty then
-         put 0 into sTimeStamp
-      end if
-      
       start player "audioPlayer"
       set the currenttime player "audioPlayer" to sTimeStamp
-      
+      --
       getPlaying true
-      
+      --
       get runningAudioIndicatorVis("true")
+   else
+      setMobileAudioPlayer "audioPlayer", "currentTime", sTimeStamp
    end if
    
    put  pTitle into fld "currentTitleLabel"
    send "updateTimer" -- in 100 milliseconds
    set the iconPresetName of widget "PlayPause" to "pause"
- 
+   
 end startPlayer
 
 on stopPlayer

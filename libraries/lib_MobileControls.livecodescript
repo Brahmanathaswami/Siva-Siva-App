@@ -209,11 +209,10 @@ end setMobileAudioPlayer
 --   // then allow play
 --end audioSeekBack
 
-Local fastforward
+Local sFastforward
+
 
 command updateTimer
-   -- put fastForward() into pDataA
-   
    
    // Update the time indicator
    if sPlaying is true then
@@ -273,7 +272,6 @@ end getCurrentTime
 function getHoursMinsTime
    return tHoursMinutes
 end getHoursMinsTime
-
 
 
 local tMilliseconds, tHours, tMinutes, tSeconds
@@ -399,11 +397,6 @@ end setZeroDurationProgress
 --end playPausedAudio
 
 
-on mouseStillDown pButtonNumber
+on mouseRelease pButtonNumber
    
-end mouseStillDown
-
-
-on errorDialog pExecutionError, pParseError
-   
-end errorDialog
+end mouseRelease
