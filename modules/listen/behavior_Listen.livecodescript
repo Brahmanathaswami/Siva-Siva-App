@@ -130,13 +130,8 @@ on openCard
          put empty into fld "my-audio-label"
          break
       case "listen-file"
-         local  tDownloadSelection, tDownloadControls
+       
          clearSelection
-         put the long id of grp "downloadSelection" into  tDownloadSelection
-         put the long id of grp "DownloadControls" into  tDownloadControls
-         
-         send "show tDownloadSelection" to me in 2 seconds
-         --send "show tDownloadControls" to me in 2 seconds
          
          put "Listen" into fld "title-label"
          put "Collections" into fld "collections-label"
