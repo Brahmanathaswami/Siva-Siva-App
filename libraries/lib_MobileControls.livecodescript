@@ -395,8 +395,3 @@ end setZeroDurationProgress
 --   end if
 --   set the iconPresetName of widget "PlayPause" to "pause"
 --end playPausedAudio
-
-
-on mouseRelease pButtonNumber
-   
-end mouseRelease

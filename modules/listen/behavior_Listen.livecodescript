@@ -130,7 +130,13 @@ on openCard
          put empty into fld "my-audio-label"
          break
       case "listen-file"
+         local  tDownloadSelection, tDownloadControls
          clearSelection
+         put the long id of grp "downloadSelection" into  tDownloadSelection
+         put the long id of grp "DownloadControls" into  tDownloadControls
+         
+         send "show tDownloadSelection" to me in 2 seconds
+         --send "show tDownloadControls" to me in 2 seconds
          
          put "Listen" into fld "title-label"
          put "Collections" into fld "collections-label"
@@ -166,6 +172,8 @@ on closeCard
    
    switch tCardName
       case "listen-file"
+         hide grp "downloadSelection"
+         hide grp "DownloadControls"
          put "" into fld "audioDetails" 
          put "" into fld "currentTitleLabel" 
          deleteAllMobileControls
@@ -1154,6 +1162,7 @@ command startPlayer  pURL,pTitle,sCardName,sSelectNum
       put sDownloadedAudioA[sSelectNum][metadata][1]["item_id"] into pItemID
       put pItemID into pDataA["item_id"]
       put pTitle  into pDataA["title"]
+      put 0 into sTimeStamp
       fetchSingleMetadata pItemID
    else
       # assume we have data 
@@ -1175,10 +1184,6 @@ command startPlayer  pURL,pTitle,sCardName,sSelectNum
       set the filename of player "audioPlayer" to pURL
    end if
    
-   
-   # 2019-10-23 BR we are not showing controller  because of iOS 13.0.3
-   # instead we are using the icons of grp "pause-pay"
-   
    if sTimeStamp is empty then
       put 0 into sTimeStamp
    end if
@@ -1191,6 +1196,7 @@ command startPlayer  pURL,pTitle,sCardName,sSelectNum
       --
       get runningAudioIndicatorVis("true")
    else
+      getPlaying true
       setMobileAudioPlayer "audioPlayer", "currentTime", sTimeStamp
    end if
    

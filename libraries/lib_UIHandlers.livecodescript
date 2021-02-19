@@ -775,7 +775,6 @@ command audioIsRunning
       if there is a widget "turnOffAudio"  then 
          show widget "turnOffAudio" 
       end if
-      togglePause true, true
    end if
   
 end audioIsRunning
